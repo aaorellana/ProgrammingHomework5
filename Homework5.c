@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
 	insertWeights(arraySize, array, filename);
 	
-	dijkstra(arraySize, array, startingNode, endingNode);
+	//dijkstra(arraySize, array, startingNode, endingNode);
 
 	printArray(arraySize, array);
 

@@ -1,17 +1,24 @@
 #include <limits.h>
+#include <stdio.h>
 #include "Dijkstra.h"
 
 void dijkstra(int arraySize, int array[][arraySize], int startingNode, int endingNode)
 {
-	int distance[arraySize];
-	int nextNode = 0;
+	
+	int pDestination[arraySize];
+	int min = INT_MAX; 
+	int nextNode = 0; // min holds the minimum value, nextNode holds the value for the next node. 
+	int distance[arraySize]; // the distance array
+	int visited[arraySize]; // the visited array
+	
 	int i;
 	int j;
 	int smallest;
 	
-	setupArray(arraySize, distance);
 	
+	//setupArray(arraySize, distance);
 	
+
 	/*
 	for(i = 1; i < arraySize; i++)
 	{
