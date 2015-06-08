@@ -1,29 +1,36 @@
-def buildMaxHeap(array)
-	for i in ((array.size - 1) / 2).downto(1)
-		maxHeapify(array, i)
+def heapSort(array)
+	buildMinHeap(array)
+	for i in (array.length - 1).downto(1)
+		array[1], array[i] = array[i], array[1]
+		minHeapify(array, 1)
 	end
 end
 
-def maxHeapify(array, i)
+def buildMinHeap(array)
+	for i in ((array.size - 1) / 2).ceil.downto(1)
+		minHeapify(array, i)
+	end
+end
+
+def minHeapify(array, i)
 	l = left(i)
 	r = right(i)
-	if l <= array.size and array[l] > array[i]
-		largest = l
+	if l <= (array.size - 1) and array[l] < array[i]
+		smallest = l
 	else
-		largest = i
+		smallest = i
 	end
-	if r <= array.size and array[r] > array[largest]
-		largest = r
+	if r <= (array.size - 1) and array[r] < array[smallest]
+		smallest = r
 	end
-	if largest != i
-		#swap(array, i, largest)
-		array[i], array[largest] = array[largest], array[i]#swaps 
-		maxHeapify(array, largest)
+	if smallest != i
+		array[i], array[smallest] = array[smallest], array[i]#swaps array[i] with array[smallest]
+		minHeapify(array, smallest)
 	end
 end
 
 
-def heapMax(array)
+def heapMin(array)
 	return array[1]
 end
 
@@ -39,4 +46,3 @@ end
 def right(i)
 	return 2 * i + 1
 end
-

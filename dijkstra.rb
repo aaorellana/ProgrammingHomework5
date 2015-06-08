@@ -1,57 +1,52 @@
 #no globals
 #priority queue for Q
+load "Set.rb"
 
-def dijkstra(arrayOfConnections, arrayOfVertices, startingNode)
+def dijkstra(arrayOfConnections, graph, startingNode)
 	
-	#vertices = Array.new struct
+	init_single_source(graph, startingNode)
+	set = MySet.new
+	queue = queue #arrayOfConnections
 	
-	init_single_source(vertices, startingNode)
-	#S = nil
-	#Q = Queue.new
-	for i in 1..arrayOfVertices.size
-		#Q << arrayOfVertices[i]
-	end
-	
-	while Q != nil do
-		u = Q.pop
-		$S = S / u
-		#for each vertex Adjacent to u
+	while queue != nil do
+		u = queue.extractMin
+		set.merge(u)
+		#for each v Adjacent to u
 		#	relax(u, v, weight)
+		#end
+		#for v in 0..Graph1.adjacent(u.node)
+		#	relax(u, Graph1.getNode(v.first.to_i), Graph1.getWeight(u.node, v.first.to_i))
 		#end
 	end
 	
-	print_path(arrayOfVertices, source, v.visited)
+	#print_path(arrayOfVertices, source, v.ancestor)
 end
 
-def init_single_source(arrayOfVertices, source)
-	vertices = Struct.new(:node, :distance, :visited)
+def init_single_source(graph, source)
 	
-	for i in 1..arrayOfVertices.size
-		vertices.new(arrayOfVertices[i], INFINITY, nil)
+	for i in 0..(graph.size - 1)
+		graph.changeDistance(i, Float::INFINITY)
+		graph.changeAncestor(i, nil)
 	end
 	
-	source.distance = 0
-	
+	graph.changeSource(source)
 end
 
 def relax(u, v, weight)#v current node, u predecessor node 
 	if v.distance > u.distance + weight#weight(u, v)
 		v.distance = u.distance + weight#weight(u, v)
-		v.visited = u
+		v.ancestor = u
 	end
 end
 
-def print_path(arrayOfVertices, source, v)
-	if v == s
-		print s
-	elsif v.visited == nil
+def print_path(graph, source, v)
+	if v == source
+		print source
+	elsif v.ancestor == nil
 		print "no path from #{s} to #{v} exists"
 	else
-		print_path(arrayOfVertices, source, v.visited)
+		print_path(graph, source, v.ancestor)
 		print v
 	end
 end
 
-def adjacent(arrayOfConnections, u)
-	arrayOfConnections.select { |list|  list.first ==  u.node } 
-end
