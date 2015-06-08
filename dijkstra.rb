@@ -1,12 +1,14 @@
 #no globals
 #priority queue for Q
-load "Set.rb"
+#load "Set.rb"
+require "set"
+load "PriorityQueue.rb"
 
-def dijkstra(arrayOfConnections, graph, startingNode)
+def dijkstra(priorityArray, graph, startingNode)
 	
-	init_single_source(graph, startingNode)
-	set = MySet.new
-	queue = queue #arrayOfConnections
+	initSingleSource(graph, startingNode)
+	set = Set.new
+	queue = PriorityQueue.new(graph.giveGraph, priorityArray)
 	
 	while queue != nil do
 		u = queue.extractMin
@@ -15,18 +17,19 @@ def dijkstra(arrayOfConnections, graph, startingNode)
 		#	relax(u, v, weight)
 		#end
 		#for v in 0..Graph1.adjacent(u.node)
-		#	relax(u, Graph1.getNode(v.first.to_i), Graph1.getWeight(u.node, v.first.to_i))
+		#	relax(u, Graph1.getNode(v[i].first), v[i].last)#Graph1.getWeight(u.node, v[i].first))
 		#end
+		graph.adjacent(u).each {|adj| relax(u, adj.first, adj.last) }
 	end
 	
-	#print_path(arrayOfVertices, source, v.ancestor)
+	#printPath(graph, source, v.predecessor)
 end
 
-def init_single_source(graph, source)
+def initSingleSource(graph, source)
 	
 	for i in 0..(graph.size - 1)
 		graph.changeDistance(i, Float::INFINITY)
-		graph.changeAncestor(i, nil)
+		graph.changePredecessor(i, nil)
 	end
 	
 	graph.changeSource(source)
@@ -35,18 +38,20 @@ end
 def relax(u, v, weight)#v current node, u predecessor node 
 	if v.distance > u.distance + weight#weight(u, v)
 		v.distance = u.distance + weight#weight(u, v)
-		v.ancestor = u
+		#v.predecessor = u original code
+		v.predecessor = u.node
 	end
 end
 
-def print_path(graph, source, v)
+def printPath(graph, source, v)
 	if v == source
 		print source
-	elsif v.ancestor == nil
+	elsif v.predecessor == nil
 		print "no path from #{s} to #{v} exists"
 	else
-		print_path(graph, source, v.ancestor)
+		print_path(graph, source, v.predecessor)
 		print v
 	end
 end
+
 

@@ -1,6 +1,6 @@
 load "Graph.rb"
-load "HeapSort.rb"
-#load "Dijkstra.rb"
+#load "HeapSort.rb"
+load "Dijkstra.rb"
 
 Graph1 = Graph.new
 
@@ -64,10 +64,9 @@ for i in 0..(priorityArray.size - 1)
 	end
 end
 
-
 Graph1.setAdjacency(adjArray)
+#print priorityArray
 
-#print Graph1.getWeight(4, 1)
-#print Graph1.getNode(1)
-Graph1.changeSource(1)
+dijkstra(priorityArray, Graph1, startingNode)
+
 

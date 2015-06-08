@@ -1,13 +1,17 @@
 class Graph
 	def initialize()
 		@graph = Array.new
-		@vertice = Struct.new(:node, :distance, :ancestor)
+		@vertice = Struct.new(:node, :distance, :predecessor)
 		@adjacencylist = Array.new
 	end
 	
+	def giveGraph()
+		return @graph
+	end
+	
 	#inserts a new vertice to the graph
-	def insertVertice(node, distance, ancestor)
-		@graph << @vertice.new(node, distance, ancestor)
+	def insertVertice(node, distance, predecessor)
+		@graph << @vertice.new(node, distance, predecessor)
 	end
 	
 	#prints out the array of vertices
@@ -25,9 +29,9 @@ class Graph
 		@graph[i].distance = distance
 	end
 	
-	#changes the value of the ancestor given the index and the new value
-	def changeAncestor(i, ancestor)
-		@graph[i].ancestor = ancestor
+	#changes the value of the predecessor given the index and the new value
+	def changePredecessor(i, predecessor)
+		@graph[i].predecessor = predecessor
 	end
 	
 	#sets the adjacencylist
@@ -59,9 +63,10 @@ class Graph
 	end
 	
 	def changeSource(source)
-		for i in 0..@graph.size do
+		for i in 0..(@graph.size - 1)  do
 			if @graph[i].node == source
 				@graph[i].distance = 0
+				break
 			end 
 		end
 	end
