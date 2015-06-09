@@ -1,3 +1,4 @@
+#sorts the array using heapsort functions
 def heapSort(array)
 	buildMinHeap(array)
 	for i in (array.length - 1).downto(1)
@@ -6,12 +7,14 @@ def heapSort(array)
 	end
 end
 
+#build the min heap
 def buildMinHeap(array)
 	for i in ((array.size - 1) / 2).ceil.downto(1)
 		minHeapify(array, i)
 	end
 end
 
+#heapifies with min
 def minHeapify(array, i)
 	l = left(i)
 	r = right(i)
@@ -29,20 +32,22 @@ def minHeapify(array, i)
 	end
 end
 
-
+#returns the smallest element
 def heapMin(array)
 	return array[1]
 end
 
-
+#gives the index of the parent
 def parent(i)
 	return i / 2
 end
 
+#gives the index of the left child
 def left(i)
 	return 2 * i
 end
 
+#gives the index of the right child
 def right(i)
 	return 2 * i + 1
 end

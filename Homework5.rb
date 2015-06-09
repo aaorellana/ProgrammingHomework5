@@ -1,72 +1,83 @@
-load "Graph.rb"
-#load "HeapSort.rb"
-load "Dijkstra.rb"
+require "./Graph.rb"
+require "./Dijkstra.rb"
 
-Graph1 = Graph.new
+class Main
+	def initialize(ar0, ar1, ar2)
+		@graph1 = Graph.new
 
-=begin
-Graph1.insert_vertice(0, 0, 0)
-Graph1.insert_vertice(2, 0, 0)
-Graph1.insert_vertice(5, 0, 0)
-Graph1.insert_vertice(1, 0, 0)
-#Graph1.show
+		@nameOfFile = ar0
+		@startingNode = ar1.to_i
+		@endingNodeNode = ar2.to_i
+		@arrayOfVertices = Array.new
+		@arrayOfConnections = Array.new
+		@priorityArray = Array.new
+		@adjArray = Array.new
+		@trigger = 0
+	end
 
-t = [0, 2, 5, 1]
-
-heapSort(t, Graph1)
-
-print t
-Graph1.show
-
-#Graph1.change_distance(0, 5)
-
-#Graph1.show
-=end
-
-
-nameOfFile = ARGV[1]
-numberOfNodes = ARGV[2]
-startingNode = ARGV[3]
-endingNode = ARGV[4]
-arrayOfVertices = Array.new
-arrayOfConnections = Array.new
-priorityArray = Array.new
-trigger = 0
+	def start
+		#reads files and initializes variables
+		self.readFile
 	
-File.open("test.tgf", "r") do |f| #read the tgf file
+		#creates adjacency list
+		self.createAdjacencyList
 	
-	f.each_line do |line|
-		if line.include?('#')
-			trigger = 1	
-		end
-		if trigger == 0
-			tokens = line.split(" ")
-			Graph1.insertVertice(tokens[0].to_i, 0, 0)
-			priorityArray << tokens[0].to_i
-		end
-		if trigger == 1 and !line.include?('#')
-			tokens = line.split(" ")
-  			arrayOfConnections << [tokens[0].to_i, tokens[1].to_i, tokens[2].to_i]
-		end
-  	end
+		#initializes the @graph1 and runs dikjstra
+		self.initAndRun
+	end	
 
-end
+	def readFile
+		#reads the tgf file
+		File.open(@nameOfFile, "r") do |f| 
+	
+			f.each_line do |line|
+				if line.include?('#')
+					@trigger = 1	
+				end
+				if @trigger == 0
+					tokens = line.split(" ")
+					@graph1.insertVertice(tokens[0].to_i, 0, 0)#adds vertices into the @graph1
+					@priorityArray << tokens[0].to_i
+				end
+				if @trigger == 1 and !line.include?('#')
+					tokens = line.split(" ")
+					@arrayOfConnections << [tokens[0].to_i, tokens[1].to_i, tokens[2].to_i]#creates the array of connections
+				end
+			end
 
-adjArray = Array.new
-
-#creates the adjacency list
-for i in 0..(priorityArray.size - 1)
-	adjArray << [priorityArray[i]]
-	for j in 0..(arrayOfConnections.size - 1)
-		if priorityArray[i] == arrayOfConnections[j].first
-			adjArray.last << arrayOfConnections[j].slice(1, 2)
 		end
 	end
+
+	def createAdjacencyList
+		#creates the adjacency list
+		for i in 0..(@priorityArray.size - 1)
+			@adjArray << [@priorityArray[i]]
+			for j in 0..(@arrayOfConnections.size - 1)
+				if @priorityArray[i] == @arrayOfConnections[j].first
+					@adjArray.last << @arrayOfConnections[j].slice(1, 2)
+				end
+			end
+		end
+	end
+
+	def initAndRun
+		#adds an element to the beginnning of the array to have the heap start at index 1
+		@priorityArray.unshift(0)
+
+		#sets the adjacency array into the @graph1
+		@graph1.setAdjacency(@adjArray)
+
+		#finds the shortest path from the starting node
+		dijkstra(@priorityArray, @graph1, @startingNode)
+
+		#prints out the path
+		printPath(@graph1, @startingNode, @endingNodeNode)
+
+	end
+	
 end
 
-Graph1.setAdjacency(adjArray)
-#print priorityArray
-
-dijkstra(priorityArray, Graph1, startingNode)
+main = Main.new(ARGV[0], ARGV[1], ARGV[2])
+main.start
 
 

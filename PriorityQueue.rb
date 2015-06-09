@@ -1,4 +1,5 @@
-load "HeapSort.rb"
+require "./HeapSort.rb"
+
 class PriorityQueue
 
 	def initialize(structlist, array)
@@ -6,12 +7,14 @@ class PriorityQueue
 		@arrayQueue = array
 	end
 	
+	#sets @structQueue and @arrayQueue
 	def setQueue(structlist, array)
 		heapSort(structlist)
 		@structQueue = structlist
 		@arrayQueue = array
 	end
 
+	#decreases the key
 	def heapDecreaseKey(array, i, key)
 		if key > array[i]
 			print "new key is larger than the current key"
@@ -23,12 +26,13 @@ class PriorityQueue
 		end
 	end
 
-	def minHeapInsert(array, key)
+	def minHeapInsert(array, key)#inserts an element to the Priority
 		array[array.size] = Float::INFINITY
 		heapDecreaseKey(array, array.size - 1, key)
 	end
 
-	def heapExtractMin(array)#extracts the minimum key
+	#extracts the minimum key from an array
+	def heapExtractMin(array)
 		if array.size < 1
 			print "heap underflow"
 		end
@@ -39,11 +43,22 @@ class PriorityQueue
 		return min
 	end
 
+	#extracts the min from @structQueue which is a node
 	def extractMin()
 		min = heapExtractMin(@arrayQueue)
 		@structQueue.select {|nodes| nodes.node ==  min } 
 	end
 	
+	#returns if @arrayQueue is empty or not
+	def empty?
+		if @arrayQueue.size > 1
+			false
+		else
+			true
+		end
+	end
+	
+	#shows the @arrayQueue
 	def showPriorityArray
 		print @arrayQueue
 	end

@@ -5,8 +5,9 @@ class Graph
 		@adjacencylist = Array.new
 	end
 	
-	def giveGraph()
-		return @graph
+	#returns @graph
+	def giveGraph
+		@graph
 	end
 	
 	#inserts a new vertice to the graph
@@ -45,15 +46,16 @@ class Graph
 	end
 	
 	#looks for nodes that are adjacent to node
-	def adjacent(node)#node is the int for the vertice
-		temp = @adjacencylist.select {|list| list.first ==  node } 
+	def adjacent(u)#node is the struct 
+		temp = @adjacencylist.select {|list| list.first ==  u.node } 
 		temp.first.shift
+
 		return temp.first
 	end
 	
 	#gets the node given the name
 	def getNode(name)#name is the int for the vertice
-		@graph.select {|nodes| nodes.node ==  name } 
+		@graph.select {|nodes| nodes.node ==  name }[0] 
 	end
 	
 	#gets the weight between node u and v
@@ -62,7 +64,8 @@ class Graph
 		return temp.first[1]
 	end
 	
-	def changeSource(source)
+	#initializes the sources distance to 0
+	def initSource(source)
 		for i in 0..(@graph.size - 1)  do
 			if @graph[i].node == source
 				@graph[i].distance = 0
