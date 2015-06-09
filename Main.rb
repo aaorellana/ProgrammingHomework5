@@ -76,8 +76,3 @@ class Main
 	end
 	
 end
-
-main = Main.new(ARGV[0], ARGV[1], ARGV[2])
-main.start
-
-
